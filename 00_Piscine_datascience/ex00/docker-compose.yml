@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: fbelotti
+      POSTGRES_DB: piscineds
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5432:5432"
