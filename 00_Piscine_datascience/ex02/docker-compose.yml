@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: fbelotti
+      POSTGRES_DB: piscineds
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./table.sql:/docker-entrypoint-initdb.d/table.sql
+      - ./customer/data_2022_oct.csv:/docker-entrypoint-initdb.d/data_2022_oct.csv
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: mysecretpassword2
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
