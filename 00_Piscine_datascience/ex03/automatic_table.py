@@ -43,8 +43,12 @@ for csv_file in os.listdir(CSV_DIR):
             f.write(f"CREATE TABLE {table_name} (\n")
 
             # Specify columns
-            for column in current_csv.columns:
-                f.write(f"  {column} {column_types.get(column, 'VARCHAR(100)')},\n")
+            for i, column in enumerate(current_csv.columns):
+                column_type = column_types.get(column, 'VARCHAR(100)')
+                if i < len(current_csv.columns) - 1:
+                    f.write(f"  {column} {column_type},\n")
+                else:
+                    f.write(f"  {column} {column_type}\n")
             f.write(");\n")
 
             # Create SQL command to import data
