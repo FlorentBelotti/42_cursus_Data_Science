@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:latest
+    build: .
     environment:
       POSTGRES_USER: fbelotti
       POSTGRES_DB: piscineds
@@ -8,8 +8,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./table.sql:/docker-entrypoint-initdb.d/table.sql
-      - ../customer/data_2022_oct.csv:/docker-entrypoint-initdb.d/data_2022_oct.csv
+      - ./automatic_table.py:/docker-entrypoint-initdb.d/automatic_table.py
+      - ../customer:/docker-entrypoint-initdb.d/customer
+    command: bash -c "python3 /docker-entrypoint-initdb.d/automatic_table.py && docker-entrypoint.sh postgres"
 
   pgadmin:
     image: dpage/pgadmin4
