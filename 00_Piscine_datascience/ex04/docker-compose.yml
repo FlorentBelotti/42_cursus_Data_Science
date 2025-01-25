@@ -1,0 +1,23 @@
+services:
+  db:
+    build: .
+    environment:
+      POSTGRES_USER: fbelotti
+      POSTGRES_DB: piscineds
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./items_table.py:/docker-entrypoint-initdb.d/items_table.py
+      - ../item.csv:/docker-entrypoint-initdb.d/item.csv
+    command: bash -c "python3 /docker-entrypoint-initdb.d/items_table.py && docker-entrypoint.sh postgres"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: mysecretpassword2
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
